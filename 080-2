@@ -1,6 +1,7 @@
 ######### Chi.Bio Operating System V1.0 #########
 
-# 080-1 custom program to go through range of light levels
+# 080-2 custom program to go through range of light levels
+# adjusted step size and timing (0.025 / day, 0.5 max)
 # also changed OD measurement function to switch off 6500 LEDG before measuring OD (and turn it back on)
 
 #Import required python packages
