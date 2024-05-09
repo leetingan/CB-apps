@@ -5,7 +5,8 @@
 # changes OD calibration factors (LASERa and LASERb) and uses a linear calibration instead of quadratic
 # changes settling after stirring to 10 seconds, as stirring is stronger for cyanobacteria
 # turns 6500K light off before measuring (and back on after)
-# includes custom program that increases light by 0.025 every 24 hours up to light setting of 0.5
+# includes custom program that increases light by 0.025 every 24 hours up to light setting of 0.5 after 6 days
+# commented out section for custom program external parameters, allows custom programs to run
 
 #Import required python packages
 import os
@@ -1074,19 +1075,21 @@ def CustomProgram(M):
     #Subsequent few lines reads in external parameters from a file if you are using any.
     fname='InputParameters_' + str(M)+'.csv'
 	
-    with open(fname, 'rb') as f:
-        reader = csv.reader(f)
-        listin = list(reader)
-    Params=listin[0]
-    addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
+    #with open(fname, 'rb') as f:
+    #    reader = csv.reader(f)
+    #    listin = list(reader)
+    #Params=listin[0]
+    #addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
 	
 	
     if (program=="C1"): # Light condition test for cyanobacteria
         now = datetime.now()
         TimeDur = now-sysData[M]['Experiment']['startTimeRaw']
         RunTime = round(TimeDur.total_seconds()/3600/24,3) # run time in days
-        lightincrease = 0.025 * (RunTime//1) # increase light by 0.025 every 1 day
-        lighttarget = 0.050 + lightincrease
+        lightincrease = 0.025 * (RunTime//1-6) # increase light by 0.025 every 1 day except for the first 6 days (reaching OD)
+	if (lightincrease <0):
+	    lightincrease = 0
+	lighttarget = 0.075 + lightincrease
         if (lighttarget >= 0.5):
             lighttarget = 0.5
         SetOutputTarget(M,'LEDG',lighttarget)
