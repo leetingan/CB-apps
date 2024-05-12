@@ -7,6 +7,7 @@
 # turns 6500K light off before measuring (and back on after)
 # removed check that prevents output pumping during turbidostat mode if there was no input pump in the last 15 seconds
 	# constant pump 2 required to replace CO2 in headspace
+# removed custom program section that prevents them from running without external parameters file
 
 #Import required python packages
 import os
@@ -1072,14 +1073,15 @@ def CustomProgram(M):
     global sysData
     M=str(M)
     program=sysData[M]['Custom']['Program']
+
     #Subsequent few lines reads in external parameters from a file if you are using any.
-    fname='InputParameters_' + str(M)+'.csv'
+    #fname='InputParameters_' + str(M)+'.csv'
 	
-    with open(fname, 'rb') as f:
-        reader = csv.reader(f)
-        listin = list(reader)
-    Params=listin[0]
-    addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
+    #with open(fname, 'rb') as f:
+        #reader = csv.reader(f)
+        #listin = list(reader)
+    #Params=listin[0]
+    #addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
 	
 	
     if (program=="C1"): # Light condition test for cyanobacteria
