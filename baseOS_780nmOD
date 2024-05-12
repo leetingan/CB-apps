@@ -5,6 +5,8 @@
 # changes OD calibration factors (LASERa and LASERb) and uses a linear calibration instead of quadratic
 # changes settling after stirring to 10 seconds, as stirring is stronger for cyanobacteria
 # turns 6500K light off before measuring (and back on after)
+# removed check that prevents output pumping during turbidostat mode if there was no input pump in the last 15 seconds
+	# constant pump 2 required to replace CO2 in headspace
 
 #Import required python packages
 import os
@@ -1947,15 +1949,15 @@ def RegulateOD(M):
     
     
     
-    if (sysData[M]['Experiment']['cycles']>15):
+    #if (sysData[M]['Experiment']['cycles']>15):
         #This section is to check if we have added any liquid recently, if not, then we dont run pump 2 since it won't be needed.
-        pastpumping=abs(sysData[M]['Pump1']['target'])
-        for pv in range(-10,-1):
-            pastpumping=pastpumping+abs(sysData[M]['Pump1']['record'][pv])
+        #pastpumping=abs(sysData[M]['Pump1']['target'])
+        #for pv in range(-10,-1):
+            #pastpumping=pastpumping+abs(sysData[M]['Pump1']['record'][pv])
         
-        if pastpumping==0.0:
-            sysData[M]['Pump2']['target']=0.0
-            sysData[M]['Pump1']['target']=0.0 #This should be equal to 0 anyway.
+        #if pastpumping==0.0:
+            #sysData[M]['Pump2']['target']=0.0
+            #sysData[M]['Pump1']['target']=0.0 #This should be equal to 0 anyway.
         
         
 
