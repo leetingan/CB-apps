@@ -9,6 +9,8 @@
 	# constant pump 2 required to replace CO2 in headspace
 # removed custom program section that prevents them from running without external parameters file
 
+# contains custom program for light optimisation of cyanobacteria
+
 #Import required python packages
 import os
 import random
@@ -1084,33 +1086,29 @@ def CustomProgram(M):
     #addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
 	
 	
-    if (program=="C1"): # Light condition test for cyanobacteria
+    if (program=="C1"): # Light condition test for cyanobacteria, 2 day lag
         now = datetime.now()
         TimeDur = now-sysData[M]['Experiment']['startTimeRaw']
         RunTime = round(TimeDur.total_seconds()/3600/24,3) # run time in days
-        lightincrease = 0.025 * (RunTime//1) # increase light by 0.025 every 1 day
+        lightincrease = 0.025 * (RunTime//1-2) # increase light by 0.025 every 1 day
+        if (lightincrease<0):
+            lightincrease = 0
         lighttarget = 0.050 + lightincrease
         if (lighttarget >= 0.5):
             lighttarget = 0.5
         SetOutputTarget(M,'LEDG',lighttarget)
 	
-    elif (program=="C2"): #UV Integral Control Program
-        integral=0.0 #Integral in integral controller
-        UV=0.0 #Intensity of Green actuation 
-        GrowthRate=sysData[M]['GrowthRate']['current']
-        GrowthTarget=sysData[M]['Custom']['Status'] #This is the controller setpoint.
-        error=GrowthTarget-GrowthRate
-        KP=float(Params[0]) #Past data suggest value of ~0.005
-        KI=float(Params[1]) #Past data suggest value of ~2e-5
-        integral=sysData[M]['Custom']['param2']+error*KI
-        if(integral>0):
-            integral=0.0
-        sysData[M]['Custom']['param2']=integral
-        UV=-1.0*(KP*error+integral)
-        sysData[M]['Custom']['param1']=UV
-        SetOutputTarget(M,'UV',UV)
-        SetOutputOn(M,'UV',1)
-        addTerminal(M,'Program = ' + str(program) + ' UV= ' + str(UV)+  ' integral= ' + str(integral))
+    elif (program=="C2"): # Light condition test for cyanobacteria, 6 day lag
+        now = datetime.now()
+        TimeDur = now-sysData[M]['Experiment']['startTimeRaw']
+        RunTime = round(TimeDur.total_seconds()/3600/24,3) # run time in days
+        lightincrease = 0.025 * (RunTime//1-6) # increase light by 0.025 every 1 day
+        if (lightincrease<0):
+            lightincrease = 0
+        lighttarget = 0.050 + lightincrease
+        if (lighttarget >= 0.5):
+            lighttarget = 0.5
+        SetOutputTarget(M,'LEDG',lighttarget)
         
     elif (program=="C3"): #UV Integral Control Program Mk 2
         integral=sysData[M]['Custom']['param2'] #Integral in integral controller
