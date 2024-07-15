@@ -13,8 +13,7 @@
 # evolution specific changes
 # contains custom program for directed evolution of s6803 FOR 086-1
     # starts light at 0.05, ramps up by 0.05 for two days and caps at 0.15
-    # turns on pump 4 bubbling after two days
-# turns pump 4 off at the same time as stirring before measuring OD (bubbles affect measurement) and on after
+# turns pump 3 off at the same time as stirring before measuring OD (bubbles affect measurement) and on after
 
 #Import required python packages
 import os
@@ -2093,7 +2092,7 @@ def runExperiment(M,placeholder):
     CycleTime=sysData[M]['Experiment']['cycleTime']
 
     SetOutputOn(M,'Stir',0) #Turning stirring off
-    SetOutputOn(M, 'Pump4',0) # Turning bubbling off 
+    SetOutputOn(M, 'Pump3',0) # Turning bubbling off 
     time.sleep(10.0) #Wait for liquid to settle. Extended to 10 seconds from 5 for cyanobacteria, because that is stirred at a much higher intensity, producing bubbles that throw off OD readings if not settled.
     if (sysData[M]['Experiment']['ON']==0):
         turnEverythingOff(M)
@@ -2151,7 +2150,7 @@ def runExperiment(M,placeholder):
     time.sleep(Pump2Ontime) #Pause here is to prevent output pumping happening at the same time as stirring.
     
     SetOutputOn(M,'Stir',1) #Start stirring again.
-    SetOutputOn(M, 'Pump4',1) # Start bubbling again 
+    SetOutputOn(M, 'Pump3',1) # Start bubbling again 
 
 
     if(sysData[M]['Experiment']['cycles']%10==9): #Dont want terminal getting unruly, so clear it each 10 rotations.
