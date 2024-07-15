@@ -1110,15 +1110,12 @@ def CustomProgram(M):
         timer = sysData[M]['Custom']['Status'] # counts the number of cycles since turbidostat mode was last switched on
 
         if (current > turbidotarget and timer == 0): # currently no OD limit, this is meant to replicate batch phase growth!
-            # once the previous target is reached:
-            turbidotarget = turbidotarget + 0.5 # increase target by 0.5
-            sysData[M]['OD']['target'] = turbidotarget
-            sysData[M]['Zigzag']['ON'] = 1 # turn on turbidostat mode
             timer = 1 # start timer
         else:
             if timer > 1440:
-                timer = 0
-                sysData[M]['Zigzag']['ON'] = 0
+                turbidotarget = turbidotarget + 0.5 # increase target by 0.5
+                sysData[M]['OD']['target'] = turbidotarget
+                timer = 0 # reset timer
             elif timer >= 1: # allows timer to only increase in the 24 hours after a setpoint is reached
                 timer = timer + 1
 
@@ -1131,15 +1128,12 @@ def CustomProgram(M):
         timer = sysData[M]['Custom']['Status'] # counts the number of cycles since turbidostat mode was last switched on
 
         if (current > turbidotarget and timer == 0): # currently no OD limit, this is meant to replicate batch phase growth!
-            # once the previous target is reached:
-            turbidotarget = turbidotarget + 0.5 # increase target by 0.5
-            sysData[M]['OD']['target'] = turbidotarget
-            sysData[M]['Zigzag']['ON'] = 1 # turn on turbidostat mode
             timer = 1 # start timer
         else:
             if timer > 3:
-                timer = 0
-                sysData[M]['Zigzag']['ON'] = 0
+                turbidotarget = turbidotarget + 0.5 # increase target by 0.5
+                sysData[M]['OD']['target'] = turbidotarget
+                timer = 0 # reset timer
             elif timer >= 1: # allows timer to only increase in the 24 hours after a setpoint is reached
                 timer = timer + 1
 
