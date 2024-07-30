@@ -11,9 +11,8 @@
 # contains custom program that can turn on turbidostat for 24 hours at 0.5 OD intervals 
 
 # evolution specific changes
-# contains custom program for directed evolution of S6803 for 080-7
-    # C5/6/7/8 switches off white light and turns on UV/red light for 8 hours, switches off UV (leaving red light on) for another 8 hours, then restarts white
-    # different ones are for different UV strengths (0.000/0.005/0.015/0.050)
+# contains custom program for directed evolution of S6803 for 086-2
+    # activating C1 will turn on UV + red for 8 hours, red for 8 hours, then return to white
 # turns pump 3 off at the same time as stirring before measuring OD (bubbles affect measurement) and on after
 
 #Import required python packages
