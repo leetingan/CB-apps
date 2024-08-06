@@ -1,19 +1,18 @@
 ######### Chi.Bio Operating System V1.0 #########
 
-# base OS for cyanobacteria (for reactors where 650 laser is changed to 780)
+# base OS for cyanobacteria (for reactors where 650 laser is changed to 780):
 # changes gain from 1 - 2 for OD since laser is weaker
 # changes OD calibration factors (LASERa and LASERb) and uses a linear calibration instead of quadratic
 # changes settling after stirring to 10 seconds, as stirring is stronger for cyanobacteria
-# turns 6500K light off before measuring (and back on after)
+# turns pump 3 off at the same time as stirring before measuring OD (bubbles affect measurement) and on after
+# turns 6500K light and red light off before measuring (and back on after)
 # removed check that prevents output pumping during turbidostat mode if there was no input pump in the last 15 seconds
     # constant pump 2 required to replace CO2 in headspace
 # removed custom program section that prevents them from running without external parameters file
-# contains custom program that can turn on turbidostat for 24 hours at 0.5 OD intervals 
 
-# evolution specific changes
-# contains custom program for directed evolution of S6803 for 086-2
+# evolution specific changes:
+# contains custom program for directed evolution of S6803 for 086-2/3
     # activating C1 will turn on UV + red for 8 hours, red for 8 hours, then return to white
-# turns pump 3 off at the same time as stirring before measuring OD (bubbles affect measurement) and on after
 
 #Import required python packages
 import os
@@ -1090,6 +1089,8 @@ def CustomProgram(M):
     #addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
     
     if (program=="C1"): # UV+red, red, return custom program
+    # no need to turn white/red on/off, only change target, as Measure OD turns it on after measurement
+    # this means that UV is left on during measurement, but should be far enough out of wavelength as to be insignificant
         
         # increase timer
         timer = sysData[M]['Custom']['Status'] # counts the number of cycles since custom program was turned on
@@ -1097,8 +1098,7 @@ def CustomProgram(M):
         # 8 hrs of UV for mutation and 8 hrs of red light to prevent repair
         if timer == 1: 
             SetOutputTarget(M,'LEDG', 0.000) # white off
-            SetOutputTarget(M,'LEDF', 0.15)
-            SetOutputOn(M,'LEDF', 1) # red on
+            SetOutputTarget(M,'LEDF', 0.15) # red on
             SetOutputTarget(M,'UV', 0.05)
             SetOutputOn(M,'UV', 1) # UV on
 
@@ -1109,8 +1109,7 @@ def CustomProgram(M):
 
         # back to white light only
         elif timer == 960:
-            SetOutputTarget(M,'LEDF', 0.00)
-            SetOutputOn(M,'LEDF', 0) # red off
+            SetOutputTarget(M,'LEDF', 0.00) #red off
             SetOutputTarget(M,'LEDG', 0.15) # white on
 
         timer = timer + 1
@@ -1594,8 +1593,9 @@ def CalibrateOD(M,item,value,value2):
 @application.route("/MeasureOD/<M>",methods=['POST'])
 def MeasureOD(M):
     
-    SetOutputOn(M, 'LEDG', 0) # FOR MEASURING CYANOBACTERIA- turn off light 
-    
+    SetOutputOn(M, 'LEDF', 0) # FOR MEASURING CYANOBACTERIA- turn off red light!
+    SetOutputOn(M, 'LEDG', 0) # FOR MEASURING CYANOBACTERIA- turn off white light!
+
     #Measures laser transmission and calculates calibrated OD from this.
     global sysData
     global sysItems
@@ -1607,8 +1607,9 @@ def MeasureOD(M):
         out=GetTransmission(M,'LASER650',['CLEAR'],2,255) # gain changed to 2
         sysData[M]['OD0']['raw']=float(out[0])
         
-        SetOutputOn(M, 'LEDG', 1) # FOR MEASURING CYANOBACTERIA- turn grow light back on
-    
+        SetOutputOn(M, 'LEDF', 1) # FOR MEASURING CYANOBACTERIA- turn red light back on
+        SetOutputOn(M, 'LEDG', 1) # FOR MEASURING CYANOBACTERIA- turn white light back on
+
         a=sysData[M]['OD0']['LASERa']#Retrieve the calibration factors for OD.
         b=sysData[M]['OD0']['LASERb'] 
         if abs(sysData[M]['OD0']['raw']) > 0.001: # avoid devision by 0
