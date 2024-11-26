@@ -1136,7 +1136,7 @@ def SetCustom(Program,Status):
         sysData[M][item]['param3']=0.0
     return('',204)
 		
-        
+# ooga booga
 def CustomProgram(M):
     #Runs a custom program, some examples are included. You can remove/edit this function as you see fit.
     #Note that the custom programs (as set up at present) use an external .csv file with input parameters. THis is done to allow these parameters to easily be varied on the fly. 
@@ -1190,7 +1190,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
         if timer <1440: 
             timer = timer + 1 
-            SetOutputTarget(M,'UV', 0.0500)
+            SetOutputTarget(M,'UV', 0.0250)
             SetOutputOn(M,'UV',1)
         elif timer == 1440:
             SetOutputTarget(M,'UV', 0)
@@ -1201,7 +1201,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
         if timer <1440: 
             timer = timer + 1 
-            SetOutputTarget(M,'UV', 0.1000)
+            SetOutputTarget(M,'UV', 0.0500)
             SetOutputOn(M,'UV',1)
         elif timer == 1440:
             SetOutputTarget(M,'UV', 0)
@@ -1223,23 +1223,13 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
         if timer <1440: 
             timer = timer + 1 
-            SetOutputTarget(M,'UV', 0.1000)
+            SetOutputTarget(M,'UV', 0.2500)
             SetOutputOn(M,'UV',1)
         elif timer == 1440:
             SetOutputTarget(M,'UV', 0)
             SetOutputOn(M,'UV',0)
         sysData[M]['Custom']['Status'] = timer
     
-    elif (program=="C8"): # UV dose = 0
-        sysData[M]['Custom']['Status'] = timer
-        if timer <1440: 
-            timer = timer + 1 
-            SetOutputTarget(M,'UV', 0.1000)
-            SetOutputOn(M,'UV',1)
-        elif timer == 1440:
-            SetOutputTarget(M,'UV', 0)
-            SetOutputOn(M,'UV',0)
-        sysData[M]['Custom']['Status'] = timer
     return
 
 def CustomLEDCycle(M,LED,Value):
