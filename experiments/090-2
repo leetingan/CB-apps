@@ -1154,7 +1154,7 @@ def CustomProgram(M):
     # addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
 	
     if (program=="C1"): # 8 hr UV pulse: 0.0025
-            sysData[M]['Custom']['Status'] = timer
+            timer = sysData[M]['Custom']['Status']
             if timer <1440: 
                 timer = timer + 1 
                 SetOutputTarget(M,'UV', 0.0025)
@@ -1165,7 +1165,7 @@ def CustomProgram(M):
             sysData[M]['Custom']['Status'] = timer
         
     elif (program=="C2"): 
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.0050)
@@ -1176,7 +1176,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
         
     elif (program=="C3"):
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.0100)
@@ -1187,7 +1187,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
             
     elif (program=="C4"):
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.0250)
@@ -1198,7 +1198,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
             
     elif (program=="C5"): # UV dose = 0
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.0500)
@@ -1209,7 +1209,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
             
     elif (program=="C6"): # UV dose = 0
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.1000)
@@ -1220,7 +1220,7 @@ def CustomProgram(M):
         sysData[M]['Custom']['Status'] = timer
                 
     elif (program=="C7"): # UV dose = 0
-        sysData[M]['Custom']['Status'] = timer
+        timer = sysData[M]['Custom']['Status']
         if timer <1440: 
             timer = timer + 1 
             SetOutputTarget(M,'UV', 0.2500)
