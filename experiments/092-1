@@ -1980,7 +1980,7 @@ def RegulateOD(M):
 
     #Make sure values are in appropriate range. We want to limit the maximum size of pump1 to prevent it from overflowing.
     if(Pump1>0.02):
-        Pump1=0.02
+        Pump1=0.01 # i am small because cyanobacteria is a lil bitch
     elif(Pump1<0):
         Pump1=0.0
 
