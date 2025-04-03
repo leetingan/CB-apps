@@ -1155,13 +1155,13 @@ def CustomProgram(M):
     # addTerminal(M,'Running Program = ' + str(program) + ' on device ' + str(M))
 	
     if (program=="C1"): # 12 hr UV pulse. SET UV MANUALLY!
-            timer = sysData[M]['Custom']['Status']
-            if timer <720: 
-                timer = timer + 1 
-                SetOutputOn(M,'UV',1)
-            elif timer == 720:
-                SetOutputOn(M,'UV',0)
-            sysData[M]['Custom']['Status'] = timer
+	    timer = sysData[M]['Custom']['Status']
+	    if timer <720: 
+		timer = timer + 1 
+		SetOutputOn(M,'UV',1)
+	    elif timer == 720:
+		SetOutputOn(M,'UV',0)
+	    sysData[M]['Custom']['Status'] = timer
         
     elif (program=="C2"): 
         timer = sysData[M]['Custom']['Status']
@@ -1964,7 +1964,7 @@ def RegulateOD(M):
     
     
     
-    if (sysData[M]['Experiment']['cycles']>15):
+    # if (sysData[M]['Experiment']['cycles']>15):
         #This section is to check if we have added any liquid recently, if not, then we dont run pump 2 since it won't be needed.
         # pastpumping=abs(sysData[M]['Pump1']['target'])
         # for pv in range(-10,-1):
